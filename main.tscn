@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://3jtlkpesjyar"]
+
+[ext_resource type="PackedScene" uid="uid://cdnrrv7xokoia" path="res://Ball/ball.tscn" id="1_0xm2m"]
+[ext_resource type="Script" uid="uid://d214jtlycluv" path="res://Main.cs" id="1_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://csm1w88px8k" path="res://Player/player.tscn" id="2_h2yge"]
+[ext_resource type="Texture2D" uid="uid://blr5s6wg34ts2" path="res://background.png" id="3_h2yge"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_1bvp3"]
+b = Vector2(-2, 1140)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_lquwl"]
+b = Vector2(1961, -2)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_7mycd"]
+a = Vector2(1981, 1088)
+b = Vector2(-4, 1091)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_272bh"]
+a = Vector2(1942, -6)
+b = Vector2(1941, 1123)
+
+[node name="Main" type="Node2D" unique_id=2035836612]
+script = ExtResource("1_1bvp3")
+metadata/_edit_group_ = true
+
+[node name="Background" type="TextureRect" parent="." unique_id=736426377]
+offset_right = 1940.0
+offset_bottom = 1088.0
+mouse_filter = 2
+texture = ExtResource("3_h2yge")
+stretch_mode = 6
+metadata/_edit_group_ = true
+
+[node name="Ball" parent="." unique_id=278292967 instance=ExtResource("1_0xm2m")]
+position = Vector2(970, 270)
+
+[node name="Player" parent="." unique_id=1238023452 instance=ExtResource("2_h2yge")]
+position = Vector2(970, 810)
+
+[node name="Bounds" type="StaticBody2D" parent="." unique_id=420848352]
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bounds" unique_id=1430500521]
+shape = SubResource("SegmentShape2D_1bvp3")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Bounds" unique_id=542961876]
+shape = SubResource("SegmentShape2D_lquwl")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Bounds" unique_id=37961406]
+shape = SubResource("SegmentShape2D_7mycd")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="Bounds" unique_id=982357998]
+shape = SubResource("SegmentShape2D_272bh")

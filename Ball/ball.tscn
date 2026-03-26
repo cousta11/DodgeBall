@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://cdnrrv7xokoia"]
+
+[ext_resource type="Script" uid="uid://qxmv4bjp33w6" path="res://Ball/Ball.cs" id="1_65gad"]
+[ext_resource type="Texture2D" uid="uid://bswnln6k7fpxj" path="res://Ball/ball.svg" id="1_l4sn5"]
+[ext_resource type="PhysicsMaterial" uid="uid://f0b4jb7iqtxu" path="res://Ball/Ball.tres" id="1_ngrkv"]
+[ext_resource type="Script" uid="uid://7bp0467euldc" path="res://Ball/Area2d.cs" id="4_4s4qd"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_65gad"]
+radius = 70.256676
+
+[node name="Ball" type="RigidBody2D" unique_id=972180986]
+physics_material_override = ExtResource("1_ngrkv")
+gravity_scale = 0.0
+linear_damp_mode = 1
+script = ExtResource("1_65gad")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=262741128]
+scale = Vector2(3, 3)
+texture = ExtResource("1_l4sn5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1728322222]
+shape = SubResource("CircleShape2D_65gad")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=484501605]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("4_4s4qd")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=431113705]
+shape = SubResource("CircleShape2D_65gad")
+
+[connection signal="body_entered" from="Area2D" to="Area2D" method="OnBodyEntered"]
