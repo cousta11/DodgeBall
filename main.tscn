@@ -6,26 +6,26 @@
 [ext_resource type="Texture2D" uid="uid://blr5s6wg34ts2" path="res://background.png" id="3_h2yge"]
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_1bvp3"]
-b = Vector2(-2, 1140)
+b = Vector2(0, 1080)
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_lquwl"]
-b = Vector2(1961, -2)
+b = Vector2(1920, 0)
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_7mycd"]
-a = Vector2(1981, 1088)
-b = Vector2(-4, 1091)
+a = Vector2(1920, 1080)
+b = Vector2(0, 1080)
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_272bh"]
-a = Vector2(1942, -6)
-b = Vector2(1941, 1123)
+a = Vector2(1920, 0)
+b = Vector2(1920, 1080)
 
 [node name="Main" type="Node2D" unique_id=2035836612]
 script = ExtResource("1_1bvp3")
 metadata/_edit_group_ = true
 
 [node name="Background" type="TextureRect" parent="." unique_id=736426377]
-offset_right = 1940.0
-offset_bottom = 1088.0
+offset_right = 1920.0
+offset_bottom = 1080.0
 mouse_filter = 2
 texture = ExtResource("3_h2yge")
 stretch_mode = 6
