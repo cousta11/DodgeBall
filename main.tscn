@@ -29,7 +29,6 @@ offset_bottom = 1080.0
 mouse_filter = 2
 texture = ExtResource("3_h2yge")
 stretch_mode = 6
-metadata/_edit_group_ = true
 
 [node name="Ball" parent="." unique_id=278292967 instance=ExtResource("1_0xm2m")]
 position = Vector2(970, 270)
@@ -37,17 +36,16 @@ position = Vector2(970, 270)
 [node name="Player" parent="." unique_id=1238023452 instance=ExtResource("2_h2yge")]
 position = Vector2(970, 810)
 
-[node name="Bounds" type="StaticBody2D" parent="." unique_id=420848352]
-metadata/_edit_group_ = true
+[node name="Borders" type="StaticBody2D" parent="." unique_id=420848352]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Bounds" unique_id=1430500521]
+[node name="LeftBorder" type="CollisionShape2D" parent="Borders" unique_id=1430500521]
 shape = SubResource("SegmentShape2D_1bvp3")
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Bounds" unique_id=542961876]
+[node name="UpBorder" type="CollisionShape2D" parent="Borders" unique_id=542961876]
 shape = SubResource("SegmentShape2D_lquwl")
 
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="Bounds" unique_id=37961406]
+[node name="DownBorder" type="CollisionShape2D" parent="Borders" unique_id=37961406]
 shape = SubResource("SegmentShape2D_7mycd")
 
-[node name="CollisionShape2D4" type="CollisionShape2D" parent="Bounds" unique_id=982357998]
+[node name="RightBorder" type="CollisionShape2D" parent="Borders" unique_id=982357998]
 shape = SubResource("SegmentShape2D_272bh")
