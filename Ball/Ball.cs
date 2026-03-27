@@ -20,7 +20,11 @@ public partial class Ball : RigidBody2D
 	}
 
 	[EventHandler(typeof(StopGame))]
-	public void Stop() => Hide();
+	public void Stop()
+	{
+		Hide();
+		LinearVelocity = Vector2.Zero;
+	}
 
 	public override void _Ready()
 	{

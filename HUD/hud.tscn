@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://dix0khlmkveel"]
+
+[ext_resource type="Script" uid="uid://cjo4p8d102275" path="res://HUD/HUD.cs" id="1_37p78"]
+
+[node name="HUD" type="CanvasLayer" unique_id=2025427219]
+script = ExtResource("1_37p78")
+
+[node name="ScoreLabel" type="Label" parent="." unique_id=325503212]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 64
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="ScoreTimer" type="Timer" parent="." unique_id=1863375578]
+
+[connection signal="timeout" from="ScoreTimer" to="." method="OnTimeOut"]

@@ -6,16 +6,22 @@ public partial class Player : CharacterBody2D
 {
 	public int Speed = 1000;
 	private AnimatedSprite2D _sprite;
+	private bool isStoped = true;
 
 	[EventHandler(typeof(StartGame))]
 	public void Start()
 	{
+		isStoped = false;
 		Position = new Vector2(970, 810);
 		Show();
 	}
 
 	[EventHandler(typeof(StopGame))]
-	public void Stop() => Hide();
+	public void Stop()
+	{
+		isStoped = true;
+		Hide();
+	}
 
 	public override void _Ready()
 	{
@@ -34,6 +40,7 @@ public partial class Player : CharacterBody2D
 
 	public override void _PhysicsProcess(double delta)
 	{
+		if(isStoped) return;
 		var direction = Input.GetVector("MoveLeft", "MoveRight", "MoveUp", "MoveDown");
 		
 		Velocity = direction.Normalized()*Speed;
