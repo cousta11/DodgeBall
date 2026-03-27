@@ -26,6 +26,17 @@ public partial class Ball : RigidBody2D
 		LinearVelocity = Vector2.Zero;
 	}
 
+	[EventHandler]
+	public void PauseGame(PauseGame pauseGame)
+	{
+		if(pauseGame.IsPaused)
+		{
+		}
+		else
+		{
+		}
+	}
+
 	public override void _Ready()
 	{
 		Hide();
