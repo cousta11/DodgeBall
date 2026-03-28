@@ -8,6 +8,7 @@ public partial class UI : CanvasLayer
 	private bool _isPaused = false;
 	private bool _isStoped = true;
 
+	private ConfigFile _config;
 	private int _bestScore = 0;
 	private int _score;
 
@@ -33,9 +34,10 @@ public partial class UI : CanvasLayer
 		_scoreTimer.Stop();
 		_buttonPause.Hide();
 
-		this.WireEvents();
-
+		load();
 		_bestScoreLabel.Text = $"Best score: {_bestScore}";
+
+		this.WireEvents();
 	}
 
 	public override void _Process(double delta)
@@ -52,10 +54,28 @@ public partial class UI : CanvasLayer
 		Direction = Input.GetVector("MoveLeft", "MoveRight", "MoveUp", "MoveDown");
 	}
 
+	private void load()
+	{
+		_config = new ConfigFile();
+		var err = _config.Load("user://bestScore.ini");
+		if(err != Error.Ok)
+			return;
+		foreach(string s in _config.GetSections())
+		{
+			_bestScore = (int)_config.GetValue(s, "BestScore");
+		}
+	}
+
+	private void save()
+	{
+		_config.SetValue("Score", "BestScore", _bestScore);
+		_config.Save("user://bestScore.ini");
+	}
+
 	[EventHandler(typeof(StartGame))]
 	public void Start()
 	{
-		//Input.MouseMode = Input.MouseModeEnum.Captured;
+		Input.MouseMode = Input.MouseModeEnum.Captured;
 
 		_score = 0;
 		_scoreLabel.Text = $"Score: {_score}";
@@ -74,7 +94,7 @@ public partial class UI : CanvasLayer
 	{
 		_isStoped = true;
 		_scoreTimer.Stop();
-		//Input.MouseMode = Input.MouseModeEnum.Visible;
+		Input.MouseMode = Input.MouseModeEnum.Visible;
 
 		if(_score > _bestScore)
 			_bestScore = _score;
@@ -85,6 +105,7 @@ public partial class UI : CanvasLayer
 		_buttonPause.Hide();
 
 		_bestScoreLabel.Text = $"Best score: {_bestScore}";
+		save();
 	}
 
 	public void OnTimeOut()
@@ -100,6 +121,7 @@ public partial class UI : CanvasLayer
 
 	public void OnExitPressed()
 	{
+		save();
 		GetTree().Quit();
 	}
 
@@ -115,14 +137,14 @@ public partial class UI : CanvasLayer
 			_buttonExit.Show();
 			_bestScoreLabel.Show();
 			_buttonPause.Show();
-			//Input.MouseMode = Input.MouseModeEnum.Visible;
+			Input.MouseMode = Input.MouseModeEnum.Visible;
 		}
 		else
 		{
 			_buttonExit.Hide();
 			_bestScoreLabel.Hide();
 			_buttonPause.Hide();
-			//Input.MouseMode = Input.MouseModeEnum.Captured;
+			Input.MouseMode = Input.MouseModeEnum.Captured;
 			_scoreTimer.Start();
 		}
 	}
