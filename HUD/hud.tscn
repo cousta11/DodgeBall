@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://cjo4p8d102275" path="res://HUD/HUD.cs" id="1_37p78"]
 
 [node name="HUD" type="CanvasLayer" unique_id=2025427219]
+process_mode = 3
 script = ExtResource("1_37p78")
 
 [node name="ScoreLabel" type="Label" parent="." unique_id=325503212]
@@ -32,6 +33,23 @@ vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="ScoreTimer" type="Timer" parent="." unique_id=1863375578]
+
+[node name="PauseButton" type="Button" parent="." unique_id=122576465]
+custom_minimum_size = Vector2(200, 100)
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -500.0
+offset_right = 100.0
+offset_bottom = -400.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_vertical = 0
+toggle_mode = true
+text = "Continue"
 
 [node name="StartButton" type="Button" parent="." unique_id=864322604]
 custom_minimum_size = Vector2(200, 100)
@@ -66,5 +84,6 @@ size_flags_vertical = 0
 text = "Exit"
 
 [connection signal="timeout" from="ScoreTimer" to="." method="OnTimeOut"]
+[connection signal="toggled" from="PauseButton" to="." method="OnPauseToggled"]
 [connection signal="pressed" from="StartButton" to="." method="OnStartPressed"]
 [connection signal="pressed" from="ExitButton" to="." method="OnExitPressed"]

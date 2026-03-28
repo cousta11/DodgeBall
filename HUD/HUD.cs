@@ -12,6 +12,7 @@ public partial class HUD: CanvasLayer
 
 	private static Button _buttonStart;
 	private static Button _buttonExit;
+	private static Button _buttonPause;
 
 	public override void _Ready()
 	{
@@ -22,22 +23,27 @@ public partial class HUD: CanvasLayer
 
 		_buttonStart = GetNode<Button>("StartButton");
 		_buttonExit = GetNode<Button>("ExitButton");
+		_buttonPause = GetNode<Button>("PauseButton");
 
 		_scoreTimer.Stop();
+		_buttonPause.Hide();
 
 		this.WireEvents();
+
+		_bestScoreLabel.Text = $"Best score: {_bestScore}";
 	}
 
 	[EventHandler(typeof(StartGame))]
 	public void Start()
 	{
-		Input.MouseMode = Input.MouseModeEnum.Hidden;
+		Input.MouseMode = Input.MouseModeEnum.Captured;
 
 		_score = 0;
 		_scoreTimer.Start();
 		_scoreLabel.Text = $"Score: {_score}";
 
 		_buttonStart.Hide();
+		_buttonPause.Hide();
 		_buttonExit.Hide();
 		_bestScoreLabel.Hide();
 	}
@@ -55,23 +61,15 @@ public partial class HUD: CanvasLayer
 		_buttonStart.Show();
 		_buttonExit.Show();
 		_bestScoreLabel.Show();
+		_buttonPause.Hide();
 
 		_bestScoreLabel.Text = $"Best score: {_bestScore}";
 	}
 
 	[EventHandler]
-	public void PauseGame(PauseGame pauseGame)
+	public void Pause(PauseGame e)
 	{
-		if(pauseGame.IsPaused)
-		{
-			_buttonExit.Show();
-			_bestScoreLabel.Show();
-		}
-		else
-		{
-			_buttonExit.Hide();
-			_bestScoreLabel.Hide();
-		}
+		OnPauseToggled(e.ToggleedOn);
 	}
 
 	public void OnTimeOut()
@@ -88,5 +86,26 @@ public partial class HUD: CanvasLayer
 	public void OnExitPressed()
 	{
 		GetTree().Quit();
+	}
+
+	public void OnPauseToggled(bool toggleedOn)
+	{
+		GetTree().Paused = toggleedOn;
+		if(toggleedOn)
+		{
+			_scoreTimer.Stop();
+			_buttonExit.Show();
+			_bestScoreLabel.Show();
+			_buttonPause.Show();
+			Input.MouseMode = Input.MouseModeEnum.Visible;
+		}
+		else
+		{
+			_buttonExit.Hide();
+			_bestScoreLabel.Hide();
+			_buttonPause.Hide();
+			Input.MouseMode = Input.MouseModeEnum.Captured;
+			_scoreTimer.Start();
+		}
 	}
 }

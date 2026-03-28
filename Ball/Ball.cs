@@ -7,6 +7,12 @@ public partial class Ball : RigidBody2D
 	private Vector2 _flightDirection;
 	private float _speed = 1500;
 
+	public override void _Ready()
+	{
+		Hide();
+		this.WireEvents();
+	}
+
 	[EventHandler(typeof(StartGame))]
 	public void Start()
 	{
@@ -24,22 +30,5 @@ public partial class Ball : RigidBody2D
 	{
 		Hide();
 		LinearVelocity = Vector2.Zero;
-	}
-
-	[EventHandler]
-	public void PauseGame(PauseGame pauseGame)
-	{
-		if(pauseGame.IsPaused)
-		{
-		}
-		else
-		{
-		}
-	}
-
-	public override void _Ready()
-	{
-		Hide();
-		this.WireEvents();
 	}
 }

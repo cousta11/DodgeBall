@@ -7,7 +7,13 @@ public partial class Player : CharacterBody2D
 	public int Speed = 1000;
 	private AnimatedSprite2D _sprite;
 	private bool isStoped = true;
-	public static bool IsPaused = false;
+
+	public override void _Ready()
+	{
+		Hide();
+		_sprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+		this.WireEvents();
+	}
 
 	[EventHandler(typeof(StartGame))]
 	public void Start()
@@ -24,35 +30,11 @@ public partial class Player : CharacterBody2D
 		Hide();
 	}
 
-	[EventHandler]
-	public void PauseGame(PauseGame pauseGame)
-	{
-		if(pauseGame.IsPaused)
-		{
-		}
-		else
-		{
-		}
-	}
-
-	public override void _Ready()
-	{
-		Hide();
-		_sprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
-		this.WireEvents();
-	}
-
 	public override void _Process(double delta)
 	{
-		if(Input.IsActionPressed("Quit"))
+		if(Input.IsActionPressed("Menu"))
 		{
-			GetTree().Quit();
-		}
-
-		if(Input.IsActionPressed("Space"))
-		{
-			Player.IsPaused = !Player.IsPaused;
-			EventBus.Trigger<PauseGame>(new PauseGame(IsPaused: Player.IsPaused));
+			EventBus.Trigger<PauseGame>(new PauseGame(ToggleedOn: true));
 		}
 	}
 
