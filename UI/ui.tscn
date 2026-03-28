@@ -1,12 +1,16 @@
-[gd_scene format=3 uid="uid://dix0khlmkveel"]
+[gd_scene format=3 uid="uid://dbcjy0iyuqdn5"]
 
-[ext_resource type="Script" uid="uid://cjo4p8d102275" path="res://HUD/HUD.cs" id="1_37p78"]
+[ext_resource type="Script" uid="uid://cjo4p8d102275" path="res://UI/UI.cs" id="1_2fwl4"]
+[ext_resource type="Texture2D" uid="uid://bixt3s1cl80wm" path="res://pause.svg" id="2_dajm1"]
 
-[node name="HUD" type="CanvasLayer" unique_id=2025427219]
+[node name="UI" type="CanvasLayer" unique_id=1254133818]
 process_mode = 3
-script = ExtResource("1_37p78")
+script = ExtResource("1_2fwl4")
+metadata/_edit_group_ = true
 
-[node name="ScoreLabel" type="Label" parent="." unique_id=325503212]
+[node name="ScoreTimer" type="Timer" parent="." unique_id=958344833]
+
+[node name="ScoreLabel" type="Label" parent="." unique_id=813825420]
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 23.0
@@ -17,7 +21,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="BestScoreLabel" type="Label" parent="." unique_id=1313075539]
+[node name="BestScoreLabel" type="Label" parent="." unique_id=149376837]
 anchors_preset = 14
 anchor_top = 0.5
 anchor_right = 1.0
@@ -32,9 +36,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="ScoreTimer" type="Timer" parent="." unique_id=1863375578]
-
-[node name="PauseButton" type="Button" parent="." unique_id=122576465]
+[node name="PauseButton" type="Button" parent="." unique_id=353498978]
 custom_minimum_size = Vector2(200, 100)
 anchors_preset = 7
 anchor_left = 0.5
@@ -48,10 +50,9 @@ offset_bottom = -400.0
 grow_horizontal = 2
 grow_vertical = 0
 size_flags_vertical = 0
-toggle_mode = true
 text = "Continue"
 
-[node name="StartButton" type="Button" parent="." unique_id=864322604]
+[node name="StartButton" type="Button" parent="." unique_id=1870186265]
 custom_minimum_size = Vector2(200, 100)
 anchors_preset = 7
 anchor_left = 0.5
@@ -67,7 +68,7 @@ grow_vertical = 0
 size_flags_vertical = 0
 text = "Start"
 
-[node name="ExitButton" type="Button" parent="." unique_id=693896807]
+[node name="ExitButton" type="Button" parent="." unique_id=2035341316]
 custom_minimum_size = Vector2(200, 100)
 anchors_preset = 7
 anchor_left = 0.5
@@ -83,7 +84,20 @@ grow_vertical = 0
 size_flags_vertical = 0
 text = "Exit"
 
+[node name="TextureButton" type="TextureButton" parent="." unique_id=1856729438]
+visible = false
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -24.0
+offset_bottom = 24.0
+grow_horizontal = 0
+scale = Vector2(3, 3)
+pivot_offset = Vector2(23, 0)
+texture_normal = ExtResource("2_dajm1")
+
 [connection signal="timeout" from="ScoreTimer" to="." method="OnTimeOut"]
-[connection signal="toggled" from="PauseButton" to="." method="OnPauseToggled"]
+[connection signal="pressed" from="PauseButton" to="." method="OnPaused"]
 [connection signal="pressed" from="StartButton" to="." method="OnStartPressed"]
 [connection signal="pressed" from="ExitButton" to="." method="OnExitPressed"]
+[connection signal="pressed" from="TextureButton" to="." method="OnPaused"]

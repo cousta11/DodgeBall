@@ -6,7 +6,6 @@ public partial class Player : CharacterBody2D
 {
 	public int Speed = 1000;
 	private AnimatedSprite2D _sprite;
-	private bool isStoped = true;
 
 	public override void _Ready()
 	{
@@ -18,7 +17,6 @@ public partial class Player : CharacterBody2D
 	[EventHandler(typeof(StartGame))]
 	public void Start()
 	{
-		isStoped = false;
 		Position = new Vector2(970, 810);
 		Show();
 	}
@@ -26,24 +24,12 @@ public partial class Player : CharacterBody2D
 	[EventHandler(typeof(StopGame))]
 	public void Stop()
 	{
-		isStoped = true;
 		Hide();
-	}
-
-	public override void _Process(double delta)
-	{
-		if(Input.IsActionPressed("Menu"))
-		{
-			EventBus.Trigger<PauseGame>(new PauseGame(ToggleedOn: true));
-		}
 	}
 
 	public override void _PhysicsProcess(double delta)
 	{
-		if(isStoped) return;
-		var direction = Input.GetVector("MoveLeft", "MoveRight", "MoveUp", "MoveDown");
-		
-		Velocity = direction.Normalized()*Speed;
+		Velocity = UI.Direction.Normalized()*Speed;
 		MoveAndSlide();
 		
 		if(Velocity.Length() > 0)

@@ -1,18 +1,23 @@
 using Godot;
 using Messaging;
 
-public partial class HUD: CanvasLayer
+public partial class UI : CanvasLayer
 {
-	private static int _bestScore = 0;
-	private static int _score;
+	public static Vector2 Direction;
 
-	private static Timer _scoreTimer;
-	private static Label _scoreLabel;
-	private static Label _bestScoreLabel;
+	private bool _isPaused = false;
+	private bool _isStoped = true;
 
-	private static Button _buttonStart;
-	private static Button _buttonExit;
-	private static Button _buttonPause;
+	private int _bestScore = 0;
+	private int _score;
+
+	private Timer _scoreTimer;
+	private Label _scoreLabel;
+	private Label _bestScoreLabel;
+
+	private Button _buttonStart;
+	private Button _buttonExit;
+	private Button _buttonPause;
 
 	public override void _Ready()
 	{
@@ -33,27 +38,43 @@ public partial class HUD: CanvasLayer
 		_bestScoreLabel.Text = $"Best score: {_bestScore}";
 	}
 
+	public override void _Process(double delta)
+	{
+		if(Input.IsActionJustPressed("Space"))
+		{
+			if(_isStoped)
+				EventBus.Trigger<StartGame>();
+			else
+				OnPaused();
+		}
+		if(Input.IsActionJustPressed("Quit"))
+			GetTree().Quit();
+		Direction = Input.GetVector("MoveLeft", "MoveRight", "MoveUp", "MoveDown");
+	}
+
 	[EventHandler(typeof(StartGame))]
 	public void Start()
 	{
-		Input.MouseMode = Input.MouseModeEnum.Captured;
+		//Input.MouseMode = Input.MouseModeEnum.Captured;
 
 		_score = 0;
-		_scoreTimer.Start();
 		_scoreLabel.Text = $"Score: {_score}";
 
 		_buttonStart.Hide();
 		_buttonPause.Hide();
 		_buttonExit.Hide();
 		_bestScoreLabel.Hide();
+		_isStoped = false;
+
+		_scoreTimer.Start();
 	}
 
 	[EventHandler(typeof(StopGame))]
 	public void Stop()
 	{
-		Input.MouseMode = Input.MouseModeEnum.Visible;
-
+		_isStoped = true;
 		_scoreTimer.Stop();
+		//Input.MouseMode = Input.MouseModeEnum.Visible;
 
 		if(_score > _bestScore)
 			_bestScore = _score;
@@ -64,12 +85,6 @@ public partial class HUD: CanvasLayer
 		_buttonPause.Hide();
 
 		_bestScoreLabel.Text = $"Best score: {_bestScore}";
-	}
-
-	[EventHandler]
-	public void Pause(PauseGame e)
-	{
-		OnPauseToggled(e.ToggleedOn);
 	}
 
 	public void OnTimeOut()
@@ -88,23 +103,26 @@ public partial class HUD: CanvasLayer
 		GetTree().Quit();
 	}
 
-	public void OnPauseToggled(bool toggleedOn)
+	public void OnPaused()
 	{
-		GetTree().Paused = toggleedOn;
-		if(toggleedOn)
+		if(_isStoped) return;
+
+		_isPaused = !_isPaused;
+		GetTree().Paused = _isPaused;
+		if(_isPaused)
 		{
 			_scoreTimer.Stop();
 			_buttonExit.Show();
 			_bestScoreLabel.Show();
 			_buttonPause.Show();
-			Input.MouseMode = Input.MouseModeEnum.Visible;
+			//Input.MouseMode = Input.MouseModeEnum.Visible;
 		}
 		else
 		{
 			_buttonExit.Hide();
 			_bestScoreLabel.Hide();
 			_buttonPause.Hide();
-			Input.MouseMode = Input.MouseModeEnum.Captured;
+			//Input.MouseMode = Input.MouseModeEnum.Captured;
 			_scoreTimer.Start();
 		}
 	}
