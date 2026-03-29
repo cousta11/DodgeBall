@@ -8,7 +8,6 @@ public partial class UI : CanvasLayer
 	private bool _isPaused = false;
 	private bool _isStoped = true;
 
-	private ConfigFile _config;
 	private int _bestScore = 0;
 	private int _score;
 
@@ -20,7 +19,11 @@ public partial class UI : CanvasLayer
 	private Button _buttonExit;
 	private Button _buttonPause;
 
-	private readonly string _pathSave = "user://save.ini";
+	private void quit()
+	{
+		Save();
+		GetTree().Quit();
+	}
 
 	public override void _Ready()
 	{
@@ -36,7 +39,7 @@ public partial class UI : CanvasLayer
 		_scoreTimer.Stop();
 		_buttonPause.Hide();
 
-		load();
+		Load();
 		_bestScoreLabel.Text = $"Best score: {_bestScore}";
 
 		this.WireEvents();
@@ -52,103 +55,8 @@ public partial class UI : CanvasLayer
 				OnPaused();
 		}
 		if(Input.IsActionJustPressed("Quit"))
-			GetTree().Quit();
+			quit();
 		Direction = Input.GetVector("MoveLeft", "MoveRight", "MoveUp", "MoveDown");
 	}
 
-	private void load()
-	{
-		_config = new ConfigFile();
-		var err = _config.Load(_pathSave);
-		if(err != Error.Ok)
-			return;
-		_bestScore = (int)_config.GetValue("Score", "BestScore");
-	}
-
-	private void save()
-	{
-		_config.SetValue("Score", "BestScore", _bestScore);
-		_config.Save(_pathSave);
-	}
-
-	[EventHandler(typeof(StartGame))]
-	public void Start()
-	{
-		Input.MouseMode = Input.MouseModeEnum.Captured;
-
-		_score = 0;
-		_scoreLabel.Text = $"Score: {_score}";
-
-		_buttonStart.Hide();
-		_buttonPause.Hide();
-		_buttonExit.Hide();
-		_bestScoreLabel.Hide();
-		_isStoped = false;
-
-		_scoreTimer.Start();
-	}
-
-	[EventHandler(typeof(StopGame))]
-	public void Stop()
-	{
-		_isStoped = true;
-		_scoreTimer.Stop();
-		Input.MouseMode = Input.MouseModeEnum.Visible;
-
-		if(_score > _bestScore)
-			_bestScore = _score;
-
-		_buttonStart.Show();
-		_buttonExit.Show();
-		_bestScoreLabel.Show();
-		_buttonPause.Hide();
-
-		_bestScoreLabel.Text = $"Best score: {_bestScore}";
-		save();
-	}
-
-	public void OnTimeOut()
-	{
-		_score++;
-		_scoreLabel.Text = $"Score: {_score}";
-	}
-
-	public void OnStartPressed()
-	{
-		EventBus.Trigger<StartGame>();
-	}
-
-	public void OnExitPressed()
-	{
-		GetTree().Quit();
-	}
-
-	public void OnPaused()
-	{
-		if(_isStoped) return;
-
-		_isPaused = !_isPaused;
-		GetTree().Paused = _isPaused;
-		if(_isPaused)
-		{
-			_scoreTimer.Stop();
-			_buttonExit.Show();
-			_bestScoreLabel.Show();
-			_buttonPause.Show();
-			Input.MouseMode = Input.MouseModeEnum.Visible;
-		}
-		else
-		{
-			_buttonExit.Hide();
-			_bestScoreLabel.Hide();
-			_buttonPause.Hide();
-			Input.MouseMode = Input.MouseModeEnum.Captured;
-			_scoreTimer.Start();
-		}
-	}
-
-	public void OnTreeExiting()
-	{
-		save();
-	}
 }

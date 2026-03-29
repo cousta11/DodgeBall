@@ -96,7 +96,6 @@ scale = Vector2(3, 3)
 pivot_offset = Vector2(23, 0)
 texture_normal = ExtResource("2_dajm1")
 
-[connection signal="tree_exiting" from="." to="." method="OnTreeExiting"]
 [connection signal="timeout" from="ScoreTimer" to="." method="OnTimeOut"]
 [connection signal="pressed" from="PauseButton" to="." method="OnPaused"]
 [connection signal="pressed" from="StartButton" to="." method="OnStartPressed"]
