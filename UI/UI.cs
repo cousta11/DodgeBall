@@ -20,6 +20,8 @@ public partial class UI : CanvasLayer
 	private Button _buttonExit;
 	private Button _buttonPause;
 
+	private readonly string _pathSave = "user://save.ini";
+
 	public override void _Ready()
 	{
 		_scoreTimer = GetNode<Timer>("ScoreTimer");
@@ -57,19 +59,16 @@ public partial class UI : CanvasLayer
 	private void load()
 	{
 		_config = new ConfigFile();
-		var err = _config.Load("user://bestScore.ini");
+		var err = _config.Load(_pathSave);
 		if(err != Error.Ok)
 			return;
-		foreach(string s in _config.GetSections())
-		{
-			_bestScore = (int)_config.GetValue(s, "BestScore");
-		}
+		_bestScore = (int)_config.GetValue("Score", "BestScore");
 	}
 
 	private void save()
 	{
 		_config.SetValue("Score", "BestScore", _bestScore);
-		_config.Save("user://bestScore.ini");
+		_config.Save(_pathSave);
 	}
 
 	[EventHandler(typeof(StartGame))]
@@ -121,7 +120,6 @@ public partial class UI : CanvasLayer
 
 	public void OnExitPressed()
 	{
-		save();
 		GetTree().Quit();
 	}
 
@@ -147,5 +145,10 @@ public partial class UI : CanvasLayer
 			Input.MouseMode = Input.MouseModeEnum.Captured;
 			_scoreTimer.Start();
 		}
+	}
+
+	public void OnTreeExiting()
+	{
+		save();
 	}
 }
